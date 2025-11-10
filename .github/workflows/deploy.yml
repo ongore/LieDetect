@@ -1,0 +1,120 @@
+name: LieDetect CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Lint
+        run: npm run lint --if-present
+
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Lint
+        run: |
+          pip install flake8
+          flake8 liedetect
+      - name: Run tests
+        run: |
+          pip install pytest
+          pytest
+
+  terraform-plan:
+    needs: [frontend, backend]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.2
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform Validate
+        run: terraform validate
+      - name: Terraform Plan
+        env:
+          TF_VAR_lambda_artifact_path: ../dist/lambda.zip
+          TF_VAR_audio_endpoint_name: ${{ secrets.AUDIO_ENDPOINT_NAME }}
+          TF_VAR_macro_endpoint_name: ${{ secrets.MACRO_ENDPOINT_NAME }}
+          TF_VAR_micro_endpoint_name: ${{ secrets.MICRO_ENDPOINT_NAME }}
+          TF_VAR_openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+        run: terraform plan -input=false
+
+  package-lambda:
+    needs: [backend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt -t package
+          cp -r backend/liedetect package/
+          cp backend/app.py package/
+      - name: Archive Lambda
+        run: |
+          cd package
+          zip -r ../lambda.zip .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: lambda.zip
+          path: lambda.zip
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: [terraform-plan, package-lambda]
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: lambda.zip
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.2
+      - name: Terraform Init
+        working-directory: infra/terraform
+        run: terraform init -input=false
+      - name: Terraform Apply
+        working-directory: infra/terraform
+        env:
+          TF_VAR_lambda_artifact_path: ../../lambda.zip
+          TF_VAR_audio_endpoint_name: ${{ secrets.AUDIO_ENDPOINT_NAME }}
+          TF_VAR_macro_endpoint_name: ${{ secrets.MACRO_ENDPOINT_NAME }}
+          TF_VAR_micro_endpoint_name: ${{ secrets.MICRO_ENDPOINT_NAME }}
+          TF_VAR_openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+        run: terraform apply -auto-approve -input=false
