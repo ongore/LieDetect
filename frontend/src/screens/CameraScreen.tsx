@@ -1,21 +1,22 @@
 import { useRef, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
-import { Camera } from 'expo-camera';
+import { Camera, CameraView } from 'expo-camera';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CameraStackParamList } from '@/navigation/CameraStack';
 import { colors } from '@/theme/colors';
 import { spacing } from '@/theme/spacing';
 import { typography } from '@/theme/typography';
+import { ParticipantRole } from '@/types/lieDetection';
 
 type Props = NativeStackScreenProps<CameraStackParamList, 'Camera'>;
 
 export const CameraScreen = ({ navigation }: Props) => {
-  const cameraRef = useRef(null as any);
+  const cameraRef = useRef<CameraView | null>(null);
   const [permissionGranted, setPermissionGranted] = useState(false);
   const [microphoneGranted, setMicrophoneGranted] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
-  const [cameraType, setCameraType] = useState('front');
-  const [role, setRole] = useState('answerer');
+  const [cameraType, setCameraType] = useState<'front' | 'back'>('front');
+  const [role, setRole] = useState<ParticipantRole>('answerer');
 
   const ensurePermissions = async () => {
     const cam = await Camera.requestCameraPermissionsAsync();
@@ -26,26 +27,30 @@ export const CameraScreen = ({ navigation }: Props) => {
 
   const handleRecord = async () => {
     await ensurePermissions();
-    if (!cameraRef.current) {
+    const camera = cameraRef.current;
+    if (!camera) {
       return;
     }
 
     if (isRecording) {
-      cameraRef.current.stopRecording();
+      camera.stopRecording();
       return;
     }
 
     try {
       setIsRecording(true);
-      const video = await cameraRef.current.recordAsync({
-        maxDuration: 120,
-        quality: Camera.Constants.VideoQuality['1080p']
+      const video = await camera.recordAsync({
+        maxDuration: 120
       });
 
-      navigation.navigate('Review', {
-        videoUri: video.uri,
-        role
-      });
+      if (video?.uri) {
+        navigation.navigate('Review', {
+          videoUri: video.uri,
+          role
+        });
+      } else {
+        console.warn('Recording returned no video');
+      }
     } catch (error) {
       console.warn('Recording failed', error);
     } finally {
@@ -54,8 +59,8 @@ export const CameraScreen = ({ navigation }: Props) => {
   };
 
   const toggleCamera = () => {
-    setCameraType((prev: 'front' | 'back') => (prev === 'front' ? 'back' : 'front'));
-    setRole((prev: 'questioner' | 'answerer') => (prev === 'answerer' ? 'questioner' : 'answerer'));
+    setCameraType((prev) => (prev === 'front' ? 'back' : 'front'));
+    setRole((prev) => (prev === 'answerer' ? 'questioner' : 'answerer'));
   };
 
   if (!permissionGranted || !microphoneGranted) {
@@ -75,7 +80,13 @@ export const CameraScreen = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.cameraWrapper}>
-        <Camera ref={cameraRef} style={StyleSheet.absoluteFill} type={cameraType as any} />
+        <CameraView
+          ref={cameraRef}
+          style={StyleSheet.absoluteFill}
+          facing={cameraType}
+          mode="video"
+          videoQuality="1080p"
+        />
         <View style={styles.overlay}>
           <Text style={styles.roleLabel}>{role === 'answerer' ? 'Answerer' : 'Questioner'} mode</Text>
         </View>

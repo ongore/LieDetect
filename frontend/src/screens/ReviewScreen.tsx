@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
-import { Video } from 'expo-av';
+import { Video, ResizeMode } from 'expo-av';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CameraStackParamList } from '@/navigation/CameraStack';
 import { colors } from '@/theme/colors';
@@ -36,7 +36,7 @@ export const ReviewScreen = ({ route, navigation }: Props) => {
           useNativeControls
           shouldPlay
           isLooping
-          resizeMode="contain"
+          resizeMode={ResizeMode.CONTAIN}
         />
       </View>
 

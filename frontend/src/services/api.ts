@@ -1,17 +1,22 @@
 import { env } from '@/config/env';
-import { LieDetectResponse, ParticipantRole, UploadMediaResponse } from '@/types/lieDetection';
+import {
+  LieDetectResponse,
+  ParticipantRole,
+  TranscriptResponse,
+  UploadMediaResponse
+} from '@/types/lieDetection';
 
 const jsonHeaders = {
   Accept: 'application/json',
   'Content-Type': 'application/json'
 };
 
-const handleResponse = async (response: Response) => {
+const handleResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
     const errorBody = await response.text();
     throw new Error(`API ${response.status}: ${errorBody}`);
   }
-  return response.json();
+  return response.json() as Promise<T>;
 };
 
 export const uploadSessionMedia = async (
@@ -36,7 +41,7 @@ export const uploadSessionMedia = async (
     body: formData
   });
 
-  return handleResponse(response);
+  return handleResponse<UploadMediaResponse>(response);
 };
 
 export const runLieDetect = async (sessionId: string): Promise<LieDetectResponse> => {
@@ -46,16 +51,16 @@ export const runLieDetect = async (sessionId: string): Promise<LieDetectResponse
     body: JSON.stringify({ sessionId })
   });
 
-  return handleResponse(response);
+  return handleResponse<LieDetectResponse>(response);
 };
 
-export const getTranscript = async (sessionId: string): Promise<{ transcript: string }> => {
+export const getTranscript = async (sessionId: string): Promise<TranscriptResponse> => {
   const response = await fetch(`${env.apiBaseUrl}/transcript`, {
     method: 'POST',
     headers: jsonHeaders,
     body: JSON.stringify({ sessionId })
   });
 
-  return handleResponse(response);
+  return handleResponse<TranscriptResponse>(response);
 };
 

@@ -24,3 +24,9 @@ export type LieDetectResponse = {
   sessionId: string;
 };
 
+export type TranscriptResponse = {
+  sessionId: string;
+  transcript: string;
+  summary?: LieDetectSummary | null;
+};
+
