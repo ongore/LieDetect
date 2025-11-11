@@ -19,11 +19,11 @@ class WhisperService:
         if not record:
             raise ValueError("No media available for transcription")
 
-        local_path = storage_service.ensure_local_path(record)
-
+        # In mock mode (or without an API key), return a fast placeholder without touching the file system.
         if settings.use_mock_services or not self._api_key:
             transcript = f"[mock transcript for {session_id} using {record.role}]"
         else:
+            local_path = storage_service.ensure_local_path(record)
             transcript = self._call_whisper(local_path, record)
 
         session_store.set_transcript(session_id, transcript)

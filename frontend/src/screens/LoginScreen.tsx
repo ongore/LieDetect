@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '@/navigation/AuthStack';
 import { colors } from '@/theme/colors';
 import { spacing } from '@/theme/spacing';
 import { typography } from '@/theme/typography';
+import { Button } from '@/components/ui/Button';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
@@ -41,15 +42,11 @@ export const LoginScreen = ({ navigation }: Props) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.primaryButton}>
-        <Text style={styles.primaryButtonText}>Login</Text>
-      </TouchableOpacity>
+      <Button title="Login" />
 
-      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-        <Text style={styles.switchText}>
-          New to LieDetect? <Text style={styles.switchTextAccent}>Create an account</Text>
-        </Text>
-      </TouchableOpacity>
+      <Text onPress={() => navigation.navigate('SignUp')} style={styles.switchText}>
+        New to LieDetect? <Text style={styles.switchTextAccent}>Create an account</Text>
+      </Text>
     </View>
   );
 };
@@ -86,18 +83,11 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     color: colors.textPrimary,
     borderWidth: 1,
-    borderColor: '#182544'
-  },
-  primaryButton: {
-    backgroundColor: colors.primary,
-    borderRadius: 16,
-    paddingVertical: spacing.md,
-    alignItems: 'center',
-    marginBottom: spacing.md
-  },
-  primaryButtonText: {
-    ...typography.button,
-    color: colors.textPrimary
+    borderColor: '#182544',
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 }
   },
   switchText: {
     ...typography.body,

@@ -1,9 +1,10 @@
-import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CameraStackParamList } from '@/navigation/CameraStack';
 import { colors } from '@/theme/colors';
 import { spacing } from '@/theme/spacing';
 import { typography } from '@/theme/typography';
+import { Button } from '@/components/ui/Button';
 
 type Props = NativeStackScreenProps<CameraStackParamList, 'Results'>;
 
@@ -75,15 +76,8 @@ export const ResultsScreen = ({ route, navigation }: Props) => {
       )}
 
       <View style={styles.actions}>
-        <TouchableOpacity style={styles.secondaryButton} onPress={() => navigation.navigate('Camera')}>
-          <Text style={styles.secondaryButtonText}>Run again</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.primaryButton}
-          onPress={() => navigation.getParent()?.navigate('GetStarted')}
-        >
-          <Text style={styles.primaryButtonText}>Back to home</Text>
-        </TouchableOpacity>
+        <Button title="Run again" variant="secondary" onPress={() => navigation.navigate('Camera')} />
+        <Button title="Back to home" onPress={() => navigation.getParent()?.navigate('GetStarted')} />
       </View>
     </SafeAreaView>
   );
@@ -108,7 +102,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     padding: spacing.xl,
     borderRadius: 16,
-    alignItems: 'center'
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 10
   },
   cardLabel: {
     ...typography.caption,
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
   },
   statBox: {
     flex: 1,
-    backgroundColor: '#182544',
+    backgroundColor: '#162547',
     borderRadius: 12,
     padding: spacing.md,
     gap: spacing.xs
@@ -147,7 +146,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderRadius: 16,
     padding: spacing.md,
-    gap: spacing.sm
+    gap: spacing.sm,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8
   },
   vectorLabel: {
     ...typography.caption,
@@ -162,7 +166,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
     borderRadius: 999,
-    backgroundColor: '#13213F'
+    backgroundColor: '#13213F',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)'
   },
   chipText: {
     ...typography.caption,
@@ -172,7 +178,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderRadius: 16,
     padding: spacing.md,
-    gap: spacing.xs
+    gap: spacing.xs,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 8
   },
   transcriptBox: {
     backgroundColor: '#101F3D',
@@ -194,28 +205,6 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     marginTop: 'auto'
   },
-  secondaryButton: {
-    flex: 1,
-    borderRadius: 16,
-    paddingVertical: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.textSecondary,
-    alignItems: 'center'
-  },
-  secondaryButtonText: {
-    ...typography.button,
-    color: colors.textSecondary
-  },
-  primaryButton: {
-    flex: 1,
-    borderRadius: 16,
-    paddingVertical: spacing.md,
-    backgroundColor: colors.primary,
-    alignItems: 'center'
-  },
-  primaryButtonText: {
-    ...typography.button,
-    color: colors.textPrimary
-  }
+  // Buttons now come from shared Button component; no extra styles
 });
 

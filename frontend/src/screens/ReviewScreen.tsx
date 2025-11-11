@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CameraStackParamList } from '@/navigation/CameraStack';
@@ -7,6 +7,7 @@ import { spacing } from '@/theme/spacing';
 import { typography } from '@/theme/typography';
 import { LoadingOverlay } from '@/components/LoadingOverlay';
 import { useLieDetection } from '@/hooks/useLieDetection';
+import { Button } from '@/components/ui/Button';
 
 type Props = NativeStackScreenProps<CameraStackParamList, 'Review'>;
 
@@ -46,20 +47,8 @@ export const ReviewScreen = ({ route, navigation }: Props) => {
       </View>
 
       <View style={styles.actions}>
-        <TouchableOpacity
-          style={[styles.secondaryButton, isBusy && styles.disabledButton]}
-          onPress={() => !isBusy && navigation.goBack()}
-          disabled={isBusy}
-        >
-          <Text style={styles.secondaryButtonText}>Retake</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.primaryButton, isBusy && styles.disabledButton]}
-          onPress={handleLieDetect}
-          disabled={isBusy}
-        >
-          <Text style={styles.primaryButtonText}>Run LieDetect</Text>
-        </TouchableOpacity>
+        <Button title="Retake" variant="secondary" onPress={() => !isBusy && navigation.goBack()} disabled={isBusy} />
+        <Button title="Run LieDetect" onPress={handleLieDetect} disabled={isBusy} />
       </View>
 
       {isBusy && <LoadingOverlay message="Uploading and analyzing session…" />}
@@ -101,29 +90,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: spacing.md,
     marginTop: spacing.xl
-  },
-  secondaryButton: {
-    flex: 1,
-    borderRadius: 16,
-    paddingVertical: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.textSecondary,
-    alignItems: 'center'
-  },
-  secondaryButtonText: {
-    ...typography.button,
-    color: colors.textSecondary
-  },
-  primaryButton: {
-    flex: 1,
-    borderRadius: 16,
-    paddingVertical: spacing.md,
-    backgroundColor: colors.primary,
-    alignItems: 'center'
-  },
-  primaryButtonText: {
-    ...typography.button,
-    color: colors.textPrimary
   },
   disabledButton: {
     opacity: 0.6

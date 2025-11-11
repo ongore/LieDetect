@@ -28,7 +28,12 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
     borderRadius: 16,
     alignItems: 'center',
-    gap: spacing.md
+    gap: spacing.md,
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 12
   },
   text: {
     ...typography.body,

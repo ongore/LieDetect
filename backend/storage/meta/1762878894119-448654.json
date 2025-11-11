@@ -1,0 +1,71 @@
+{
+  "sessionId": "1762878894119-448654",
+  "media": {
+    "answerer": {
+      "key": "sessions/1762878894119-448654/answerer.mp4",
+      "bucket": null,
+      "localPath": "storage/sessions/1762878894119-448654/answerer.mp4",
+      "contentType": "video/quicktime"
+    }
+  },
+  "createdAt": "2025-11-11T16:34:54.292791+00:00",
+  "updatedAt": "2025-11-11T16:34:54.350659+00:00",
+  "summary": {
+    "lieProbability": 0.5,
+    "audioScore": 0.0,
+    "macroScore": 0.0,
+    "microScore": 0.0,
+    "comparisonVector": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "audioVector": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "macroVector": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "llmVector": {
+      "angry": 0.1,
+      "calm": 0.2,
+      "disgust": 0.1,
+      "fearful": 0.1,
+      "happy": 0.2,
+      "neutral": 0.2,
+      "sad": 0.05,
+      "surprised": 0.05
+    },
+    "alignmentScore": 0.0
+  },
+  "transcript": "[mock transcript for 1762878894119-448654 using answerer]",
+  "llmVector": {
+    "angry": 0.1,
+    "calm": 0.2,
+    "disgust": 0.1,
+    "fearful": 0.1,
+    "happy": 0.2,
+    "neutral": 0.2,
+    "sad": 0.05,
+    "surprised": 0.05
+  }
+}

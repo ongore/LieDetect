@@ -1,10 +1,11 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@/navigation/AppNavigator';
 import { colors } from '@/theme/colors';
 import { spacing } from '@/theme/spacing';
 import { typography } from '@/theme/typography';
+import { Button } from '@/components/ui/Button';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'GetStarted'>;
 
@@ -22,19 +23,8 @@ export const GetStartedScreen = ({ navigation }: Props) => {
       </View>
 
       <View style={styles.actions}>
-        <TouchableOpacity
-          style={styles.primaryButton}
-          onPress={() => navigation.navigate('Auth')}
-        >
-          <Text style={styles.primaryButtonText}>Login / Sign up</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.secondaryButton}
-          onPress={() => navigation.navigate('Capture')}
-        >
-          <Text style={styles.secondaryButtonText}>Enter Lie Detect Mode</Text>
-        </TouchableOpacity>
+        <Button title="Login / Sign up" onPress={() => navigation.navigate('Auth')} />
+        <Button title="Enter Lie Detect Mode" variant="secondary" onPress={() => navigation.navigate('Capture')} />
       </View>
     </LinearGradient>
   );
@@ -80,27 +70,6 @@ const styles = StyleSheet.create({
   },
   actions: {
     gap: spacing.md
-  },
-  primaryButton: {
-    backgroundColor: colors.primary,
-    borderRadius: 16,
-    paddingVertical: spacing.md,
-    alignItems: 'center'
-  },
-  primaryButtonText: {
-    ...typography.button,
-    color: colors.textPrimary
-  },
-  secondaryButton: {
-    borderRadius: 16,
-    paddingVertical: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.textSecondary,
-    alignItems: 'center'
-  },
-  secondaryButtonText: {
-    ...typography.button,
-    color: colors.textSecondary
   }
 });
 

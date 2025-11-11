@@ -1,0 +1,49 @@
+{
+  "sessionId": "1762878890735-103486",
+  "media": {
+    "answerer": {
+      "key": "sessions/1762878890735-103486/answerer.mp4",
+      "bucket": null,
+      "localPath": "storage/sessions/1762878890735-103486/answerer.mp4",
+      "contentType": "video/quicktime"
+    }
+  },
+  "createdAt": "2025-11-11T16:34:50.927261+00:00",
+  "updatedAt": "2025-11-11T16:34:51.003284+00:00",
+  "summary": {
+    "lieProbability": 0.0,
+    "audioScore": 0.0,
+    "macroScore": 0.0,
+    "microScore": 0.0,
+    "comparisonVector": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "audioVector": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "macroVector": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

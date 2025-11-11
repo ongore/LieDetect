@@ -10,24 +10,36 @@ type TypographyScale = {
 
 export const typography: TypographyScale = {
   titleLarge: {
-    fontSize: 28,
-    fontWeight: '700'
+    fontSize: 30,
+    lineHeight: 36,
+    letterSpacing: 0.2,
+    fontWeight: '700',
+    fontFamily: 'System'
   },
   titleMedium: {
-    fontSize: 20,
-    fontWeight: '600'
+    fontSize: 22,
+    lineHeight: 28,
+    letterSpacing: 0.2,
+    fontWeight: '600',
+    fontFamily: 'System'
   },
   body: {
     fontSize: 16,
-    fontWeight: '400'
+    lineHeight: 22,
+    fontWeight: '400',
+    fontFamily: 'System'
   },
   button: {
     fontSize: 16,
-    fontWeight: '600'
+    letterSpacing: 0.3,
+    fontWeight: '600',
+    fontFamily: 'System'
   },
   caption: {
     fontSize: 12,
-    fontWeight: '400'
+    lineHeight: 16,
+    fontWeight: '400',
+    fontFamily: 'System'
   }
 };
 

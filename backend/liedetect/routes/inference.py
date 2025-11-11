@@ -46,7 +46,8 @@ def transcript():
     try:
         transcript_text = whisper_service.transcribe(session_id)
         current_app.logger.info('transcript-generated', extra={'session_id': session_id})
-    except ValueError as exc:
+    except Exception as exc:
+        # Return a client-friendly error and avoid hanging the request
         current_app.logger.warning('transcript-error', extra={'session_id': session_id, 'error': str(exc)})
         return jsonify({'error': str(exc)}), HTTPStatus.BAD_REQUEST
 
